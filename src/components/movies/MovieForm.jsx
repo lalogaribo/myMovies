@@ -1,6 +1,6 @@
 import React from "react";
 import { getGenres } from "../../services/fakeGenreService";
-import { saveMovie } from "../../services/fakeMovieService";
+import { saveMovie, getMovie } from "../../services/fakeMovieService";
 
 import Form from "../shared/Form";
 import Joi from "joi-browser";
@@ -25,22 +25,27 @@ class MovieDetail extends Form {
   };
 
   componentDidMount() {
+    const { match, history } = this.props;
     this.setState({ genres: getGenres() });
+
+    if (match.params.id) {
+      const movie = getMovie(match.params.id);
+      if (!movie) return history.replace("/not-found");
+
+      this.setState({ data: movie });
+    }
   }
 
   doSubmit = () => {
     const { data } = this.state;
-
     const movie = { ...data };
-    console.log(movie);
     saveMovie(movie);
 
     this.props.history.push("/movies");
   };
 
   render() {
-    const { genres, data } = this.state;
-    console.log(data.genres);
+    const { genres } = this.state;
     return (
       <div>
         <h1>Movie Form </h1>

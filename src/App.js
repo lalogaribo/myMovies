@@ -21,6 +21,7 @@ function App() {
           <Route path="/customers" component={Customers} />
           <Route path="/movies" exact component={Movies} />
           <Route path="/movies/new" component={MovieForm} />
+          <Route path="/movies/:id" component={MovieForm} />
           <Route path="/rentals" component={Rentals} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="/" exact to="/movies" />

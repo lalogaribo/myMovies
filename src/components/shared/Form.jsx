@@ -76,8 +76,6 @@ class Form extends Component {
     );
   }
 
-  // disabled={this.validate()}
-
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
     return (
@@ -99,7 +97,7 @@ class Form extends Component {
     return (
       <DropDown
         name={name}
-        value={value}
+        value={data[name]}
         label={label}
         error={errors[name]}
         collection={collection}

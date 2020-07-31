@@ -20,7 +20,6 @@ const DropDown = ({
             name={name}
             className="form-control"
             onChange={handleSelect}
-            value={value}
           >
             <option>Select category</option>
             {collection.map((c) => (
