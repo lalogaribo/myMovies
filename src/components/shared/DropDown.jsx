@@ -18,13 +18,15 @@ const DropDown = ({
             {...rest}
             id={name}
             name={name}
-            class="form-control"
+            className="form-control"
             onChange={handleSelect}
             value={value}
           >
             <option>Select category</option>
             {collection.map((c) => (
-              <option value={{ _id: c._id, name: c.name }}>{c.name}</option>
+              <option value={c._id} key={c._id}>
+                {c.name}
+              </option>
             ))}
           </select>
         </>

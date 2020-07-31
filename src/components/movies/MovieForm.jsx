@@ -1,6 +1,6 @@
 import React from "react";
 import { getGenres } from "../../services/fakeGenreService";
-import { create } from "../../services/fakeMovieService";
+import { saveMovie } from "../../services/fakeMovieService";
 
 import Form from "../shared/Form";
 import Joi from "joi-browser";
@@ -30,9 +30,11 @@ class MovieDetail extends Form {
 
   doSubmit = () => {
     const { data } = this.state;
-    console.log(data.genre);
+
     const movie = { ...data };
-    create(movie);
+    console.log(movie);
+    saveMovie(movie);
+
     this.props.history.push("/movies");
   };
 
