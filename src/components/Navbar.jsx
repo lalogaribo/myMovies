@@ -41,6 +41,20 @@ function Navbar() {
         >
           Rentals
         </NavLink>
+        <NavLink
+          to="/login"
+          activeStyle={styles.active}
+          className="nav-item nav-link"
+        >
+          Login
+        </NavLink>
+        <NavLink
+          to="/register"
+          activeStyle={styles.active}
+          className="nav-item nav-link"
+        >
+          Register
+        </NavLink>
       </div>
     </div>
   );

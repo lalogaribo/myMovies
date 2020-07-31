@@ -92,6 +92,14 @@ export function saveMovie(movie) {
   return movieInDb;
 }
 
+export function create(movie) {
+  if (!movie._id) {
+    movie._id = Date.now();
+    movies.push(movie);
+    alert("movie added");
+  }
+}
+
 export function deleteMovie(id) {
   let movieInDb = movies.find((m) => m._id === id);
   console.log("from movie serice", movieInDb);

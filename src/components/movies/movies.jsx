@@ -43,15 +43,10 @@ class Movies extends Component {
     );
     const paginatedMovies = paginate(sorted, currentPage, pageSize);
 
-    return (
-      <div style={{ textAlign: "center" }}>
-        {<h4>Showing {filteredMovies.length} movies in the database.</h4>}
-        {this.renderTable(paginatedMovies)}
-      </div>
-    );
+    return <div>{this.renderTable(paginatedMovies, filteredMovies)}</div>;
   }
 
-  renderTable = (paginatedMovies) => {
+  renderTable = (paginatedMovies, filteredMovies) => {
     const {
       movies,
       pageSize,
@@ -71,6 +66,13 @@ class Movies extends Component {
           />
         </div>
         <div className="col-md-10">
+          <button
+            className="btn btn-primary"
+            onClick={() => this.props.history.push("/movies/new")}
+          >
+            New Movie
+          </button>
+          {<h4>Showing {filteredMovies.length} movies in the database.</h4>}
           <MoviesTables
             currentPage={currentPage}
             movies={paginatedMovies}
