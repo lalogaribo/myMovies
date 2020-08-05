@@ -1,5 +1,6 @@
 import React from "react";
 import Like from "../shared/Like";
+import { Link } from "react-router-dom";
 
 const MovieList = ({
   title,
@@ -14,7 +15,9 @@ const MovieList = ({
   return (
     <>
       <tr>
-        <td>{title}</td>
+        <td>
+          <Link to={`/movies/${id}`}>{title}</Link>
+        </td>
         <td>{genre}</td>
         <td>{stock}</td>
         <td>{rate}</td>

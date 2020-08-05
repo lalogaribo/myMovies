@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import { Link } from "react-router-dom";
+
 import { getMovies } from "../../services/fakeMovieService";
 import { getGenres } from "../../services/fakeGenreService";
 import { paginate } from "../../utils/paginate";
 import Pagination from "../shared/Pagination";
 import Filter from "../shared/Filter";
 import MoviesTables from "./MoviesTables";
+import Input from "../shared/Input";
 
 class Movies extends Component {
   state = {
@@ -15,6 +18,7 @@ class Movies extends Component {
     pageSize: 4,
     selectedGenre: "",
     sortColumn: { path: "title", order: "asc" },
+    search: "",
   };
 
   componentDidMount() {
@@ -28,14 +32,19 @@ class Movies extends Component {
       currentPage,
       selectedGenre,
       sortColumn,
+      search,
     } = this.state;
 
     if (movies.length === 0) return <h3>No movies in database</h3>;
 
-    const filteredMovies = selectedGenre
-      ? movies.filter((movie) => movie.genre.name === selectedGenre)
-      : movies;
-
+    let filteredMovies = movies;
+    if (search) {
+      filteredMovies = movies.filter((m) =>
+        m.title.toLowerCase().startsWith(search.toLowerCase())
+      );
+    } else if (selectedGenre && selectedGenre._id) {
+      filteredMovies = movies.filter((m) => m.genre._id === selectedGenre._id);
+    }
     const sorted = _.orderBy(
       filteredMovies,
       [sortColumn.path],
@@ -43,15 +52,10 @@ class Movies extends Component {
     );
     const paginatedMovies = paginate(sorted, currentPage, pageSize);
 
-    return (
-      <div style={{ textAlign: "center" }}>
-        {<h4>Showing {filteredMovies.length} movies in the database.</h4>}
-        {this.renderTable(paginatedMovies)}
-      </div>
-    );
+    return <div>{this.renderTable(paginatedMovies, filteredMovies)}</div>;
   }
 
-  renderTable = (paginatedMovies) => {
+  renderTable = (paginatedMovies, filteredMovies) => {
     const {
       movies,
       pageSize,
@@ -59,6 +63,7 @@ class Movies extends Component {
       genres,
       selectedGenre,
       sortColumn,
+      search,
     } = this.state;
     return (
       <div className="row">
@@ -71,6 +76,18 @@ class Movies extends Component {
           />
         </div>
         <div className="col-md-10">
+          <Link className="btn btn-primary" to="/movies/new">
+            New Movie
+          </Link>
+          {
+            <Input
+              name="search"
+              placeholder="Search"
+              onChange={this.handleSearch}
+              value={search}
+            />
+          }
+          {<h4>Showing {filteredMovies.length} movies in the database.</h4>}
           <MoviesTables
             currentPage={currentPage}
             movies={paginatedMovies}
@@ -80,6 +97,7 @@ class Movies extends Component {
             pageSize={pageSize}
             handlePage={this.handlePage}
             onSort={this.handleSort}
+            handleCreateMovie={this.handleCreateMovie}
           />
           <Pagination
             itemsCount={movies.length}
@@ -96,6 +114,18 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  handleSearch = (e) => {
+    this.setState({
+      search: e.currentTarget.value,
+      selectedGenre: null,
+      currentPage: 1,
+    });
+  };
+
+  handleCreateMovie = (movie) => {
+    const newMovies = [...this.state.movies];
+    this.setState({ movies: newMovies });
+  };
   handleLike = (movie) => {
     console.log(movie);
   };
